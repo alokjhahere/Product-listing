@@ -5,6 +5,9 @@ const ProductList = () => {
     const [productsArray, setProductsArray] = useState([])
     const [filteredProduct, setFilteredProduct] = useState([])
     const [sortOrder, setSortOrder] = useState("")
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState([]);
+
     useEffect(()=>{
      fetchData();
     }, [])
@@ -15,6 +18,7 @@ const ProductList = () => {
         console.log(json);
         setProductsArray(json);
         setFilteredProduct(json);
+        setCategories(["all", ...new Set(json.map((item) => item.category))])
     }
 
 
@@ -30,6 +34,16 @@ const ProductList = () => {
            setFilteredProduct(sortedArray)
     }
 
+    const handleCategory = (category) => {
+      setSelectedCategory(category);
+      let filtered = category === "all" ? productsArray
+      : productsArray.filter((item)=>item.category === category)
+
+      setFilteredProduct(filtered)
+    }
+
+
+  
   return (
     <div className='p-6 bg-gray-200'>
       <h1 className="text-2xl font-bold mb-6">E-Commerce Product Listing</h1>
@@ -38,6 +52,10 @@ const ProductList = () => {
             <option value="">Sort By</option>
             <option value="low to high">Price : Low to High</option>
             <option value="high to low">Price : High to Low</option>
+        </select>
+
+        <select value={selectedCategory} onChange={(e)=>handleCategory(e.target.value)} className="px-3 py-2 border rounded">
+            {categories.map((item, index)=> <option value={item} key={index}>{item}</option>)}
         </select>
       </div>
     <div className="bg-gray-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
