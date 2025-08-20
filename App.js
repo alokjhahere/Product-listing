@@ -1,8 +1,9 @@
 import ReactDOM from "react-dom/client"
+import ProductList from "./src/components/ProductList";
 const AppLayout = () => {
   return (
     <div>
-      Hello From React
+      <ProductList/>
     </div>
   )
 }
